@@ -1,5 +1,6 @@
 {% url 'home' as home_url %}
 {% url 'clients:list' as clients_list_url %}
+{% url 'products:list' as products_list_url %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
   <div class="container">
@@ -20,8 +21,8 @@
         <li class="nav-item  {% if request.path == home_url %} active {% endif %}">
           <a class="nav-link" href="{{ home_url }}">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Products</a>
+        <li class="nav-item {% if request.path == products_list_url %} active {% endif %}">
+          <a class="nav-link" href="{{ products_list_url }}">Products</a>
         </li>
         <li class="nav-item {% if request.path == clients_list_url %} active {% endif %}">
           <a class="nav-link" href="{{ clients_list_url }}">Clients</a>
