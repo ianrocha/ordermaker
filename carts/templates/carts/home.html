@@ -2,12 +2,20 @@
 
 {% block content %}
   <h1>Cart</h1>
+  {% if cart.client.exists %}
   <table class="table cart-table">
     <thead>
       <tr>
         <th scope="row">Client: {{ cart.client }}</th>
       </tr>
-  {% if cart_itens.exists %}
+  {% else %}
+  <table class="table cart-table">
+    <thead>
+      <tr>
+        <th scope="row">No Client Chosen! <a href="{% url 'clients:list' %}">Go to clients list</a>.</th>
+      </tr>
+  {% endif %}
+  {% if cart_items.exists %}
       <tr>
         <th scope="col">#</th>
         <th scope="col">Product Name</th>
@@ -16,7 +24,7 @@
       </tr>
     </thead>
     <tbody class="cart-body">
-      {% for item in cart_itens.all %}
+      {% for item in cart_items.all %}
       <tr class="cart-product">
         <th scope="row">{{ forloop.counter }}</th>
         <td>{{ item.product }}</td>
@@ -33,6 +41,6 @@
   {% else %}
     </thead>
   </table>
-  <p class="lead">Cart is empty</p>
+  <p class="lead">Cart is empty! <a href="{% url 'products:list' %}">Go Shop</a>.</p>
   {% endif %}
 {% endblock %}

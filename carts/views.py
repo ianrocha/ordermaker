@@ -7,8 +7,8 @@ from products.models import Product
 
 def cart_home(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
-    cart_itens_obj = CartItem.objects.all().filter(cart=cart_obj)
-    context = {'cart_itens': cart_itens_obj,
+    cart_items_obj = CartItem.objects.all().filter(cart=cart_obj)
+    context = {'cart_items': cart_items_obj,
                'cart': cart_obj}
     return render(request, "carts/home.html", context)
 
@@ -43,7 +43,6 @@ def cart_update(request):
                 "removed": not added,
                 "cartItemCount": cart_item_count.count(),
             }
-            print(json_data)
             return JsonResponse(json_data)
 
     return redirect('cart:home')
