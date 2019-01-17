@@ -1,7 +1,7 @@
 {% url 'home' as home_url %}
 {% url 'clients:list' as clients_list_url %}
 {% url 'products:list' as products_list_url %}
-
+{% url 'cart:home' as cart_url %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
   <div class="container">
@@ -28,8 +28,8 @@
         <li class="nav-item {% if request.path == products_list_url %} active {% endif %}">
           <a class="nav-link" href="{{ products_list_url }}">Products</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
+        <li class="nav-item {% if request.path == cart_url %} active {% endif %}">
+          <a class="nav-link" href="{{ cart_url }}">
             <span class="navbar-cart-count">{{ request.session.cart_items }}</span>
             <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
         </li>
