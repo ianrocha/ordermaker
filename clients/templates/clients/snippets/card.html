@@ -5,7 +5,6 @@
   <div class="card-body">
     <h5 class="card-title">{{ instance.name }}</h5>
     <p class="card-text">{{ instance.description }}</p>
-    {{cart}}
     {% include 'clients/snippets/update-cart.html' with client=instance cart=cart %}
   </div>
 </div>

@@ -3,8 +3,13 @@
   <input type="hidden" name="client_id" value="{{ client.id }}" />
 
   <span class="submit-span">
-    {% if client in cart %}
-      In Cart <button type="submit" class="btn btn-link">Remove?</button>
+
+    {% if cart.client%}
+      {% if client == cart.client %}
+        Selected <button type="submit" class="btn btn-link">Remove?</button>
+      {% else %}
+        <button type="submit" class="btn btn-success">Change Client</button>
+      {% endif %}
     {% else %}
       <button type="submit" class="btn btn-success">Select Client</button>
     {% endif %}
