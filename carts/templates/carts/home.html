@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Cart</h1>
+  <table class="table cart-table">
+    <thead>
+      <tr>
+        <th scope="row">Client: {{ cart.client }}</th>
+      </tr>
+  {% if cart_itens.exists %}
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Product Unit Price</th>
+      </tr>
+    </thead>
+    <tbody class="cart-body">
+      {% for item in cart_itens.all %}
+      <tr class="cart-product">
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ item.product }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ item.price }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+          <td colspan="2"></td>
+          <td><a class="btn btn-block btn-success" href="#">Checkout</a></td>
+      </tr>
+    </tbody>
+  </table>
+  {% else %}
+    </thead>
+  </table>
+  <p class="lead">Cart is empty</p>
+  {% endif %}
+{% endblock %}
