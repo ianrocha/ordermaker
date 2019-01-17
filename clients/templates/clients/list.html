@@ -3,13 +3,17 @@
 {% block content %}
 
     <div class="row">
-      <div class="col-12">
-        <ol>
-          {% for object in object_list %}
-            <li>{{object.name}}</li>
-          {% endfor %}
-        </ol>
-      </div>
+      {% for object in object_list %}
+        <div class="col">
+
+          {% include 'clients/snippets/card.html' with instance=object %}
+
+          {% if forloop.counter|divisibleby:3 %}
+            </div></div><div class="row"><div class="col-12"><hr/></div>
+          {% else %}
+            </div>
+          {% endif %}
+      {% endfor %}
     </div>
 
 {% endblock %}
