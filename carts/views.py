@@ -67,6 +67,18 @@ def cart_update(request):
     return redirect('cart:home')
 
 
+def cart_item_detail_api_view(request):
+    cart = request.GET.get('cart')
+    cart_item_obj = CartItem.objects.all().filter(cart=cart)
+    cart_items = [{"id": x.id,
+                   "cart": x.cart,
+                   "product": x.product,
+                   "quantity": x.quantity,
+                   "price": x.price} for x in cart_item_obj]
+    cart_data = {'cart_items': cart_items}
+    return JsonResponse(cart_data)
+
+
 class CartItemUpdateView(UpdateView):
     form_class = CartItemForm
     model = CartItem

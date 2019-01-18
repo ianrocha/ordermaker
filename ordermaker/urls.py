@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from .views import HomePage
+from carts.views import cart_item_detail_api_view
 
 urlpatterns = [
     path('', HomePage.as_view(), name='home'),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('clients/', include(('clients.urls', 'clients'), namespace='clients')),
     path('products/', include(('products.urls', 'products'), namespace='products')),
     path('cart/', include(('carts.urls', 'cart'), namespace='cart')),
+    path('api/cart/', cart_item_detail_api_view, name='api-cart')
 ]
 
 if settings.DEBUG:

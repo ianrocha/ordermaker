@@ -7,6 +7,10 @@ class CartItemForm(forms.ModelForm):
     class Meta:
         model = CartItem
         fields = ['product', 'quantity', 'price']
+        widgets = {
+            'price': forms.NumberInput(),
+            'quantity': forms.NumberInput(),
+        }
 
     def __init__(self, *args, **kwargs):
         super(CartItemForm, self).__init__(*args, **kwargs)
