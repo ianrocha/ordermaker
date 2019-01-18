@@ -1,6 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView
 
+from .forms import CartItemForm
 from .models import Cart, CartItem
 from clients.models import Client
 from products.models import Product
@@ -62,3 +65,10 @@ def cart_update(request):
             return JsonResponse(json_data)
 
     return redirect('cart:home')
+
+
+class CartItemUpdateView(UpdateView):
+    form_class = CartItemForm
+    model = CartItem
+    template_name = 'carts/cart_item_update_form.html'
+    success_url = reverse_lazy('cart:home')

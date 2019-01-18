@@ -16,9 +16,10 @@ Including another URLconf
 
 from django.urls import path
 
-from .views import cart_home, cart_update
+from .views import cart_home, cart_update, CartItemUpdateView
 
 urlpatterns = [
     path('', cart_home, name='home'),
     path('update/', cart_update, name='update'),
+    path('item/edit/<pk>', CartItemUpdateView.as_view(), name='item-update')
 ]
