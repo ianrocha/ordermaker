@@ -49,7 +49,9 @@ def cart_update(request):
             cart_item_qs.cart = cart_obj
             cart_item_qs.product = product_obj
             cart_item_qs.quantity = product_obj.is_multiple
+            cart_item_qs.default_quantity = product_obj.is_multiple
             cart_item_qs.price = product_obj.unit_price
+            cart_item_qs.default_price = product_obj.unit_price
             cart_item_qs.save()
             added = True
 

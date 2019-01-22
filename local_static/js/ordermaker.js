@@ -83,4 +83,19 @@ $(document).ready(function(){
             }
         })
     }
+
+    var CartItemQuantity = $("#id_quantity");
+
+    CartItemQuantity.blur(function(){
+        var thisItemQuantity = $(this).val()
+        var defaultQuantity = $('#id_default_quantity').val()
+        if ((thisItemQuantity % defaultQuantity != 0) || (thisItemQuantity == 0)) {
+            alert("This item can't be sold in that quantity!")
+            var updateItem = $('#update_item')
+            updateItem.attr('disabled', true)
+        } else {
+            var updateItem = $('#update_item')
+            updateItem.attr('disabled', false)
+        }
+    })
 })
