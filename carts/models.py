@@ -33,12 +33,23 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
+    OPTIMUM = 'Optimum'
+    GOOD = 'Good'
+    BAD = 'Bad'
+
+    PROFITABILITY_CHOICES = (
+        (OPTIMUM, 'Optimum'),
+        (GOOD, 'Good'),
+        (BAD, 'Bad'),
+    )
+
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(default=0.01, max_digits=100, decimal_places=2)
     default_quantity = models.PositiveIntegerField(default=1)
     default_price = models.DecimalField(default=0.01, max_digits=100, decimal_places=2)
+    profitability = models.CharField(max_length=7, choices=PROFITABILITY_CHOICES, default=GOOD)
 
     def __str__(self):
         return str(self.id)

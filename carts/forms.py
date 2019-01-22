@@ -6,7 +6,9 @@ from .models import CartItem
 class CartItemForm(forms.ModelForm):
     class Meta:
         model = CartItem
-        fields = ['product', 'quantity', 'price', 'default_price', 'default_quantity']
+        fields = ['product', 'quantity', 'price',
+                  'default_price', 'default_quantity',
+                  'profitability']
         widgets = {
             'quantity': forms.NumberInput(attrs={'min': 1}),
             'price': forms.NumberInput(attrs={'min': 0.01}),
