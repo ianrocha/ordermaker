@@ -6,7 +6,9 @@ from django.views.generic import UpdateView
 from .forms import CartItemForm
 from .models import Cart, CartItem
 from clients.models import Client
+from orders.models import Order
 from products.models import Product
+
 
 
 def cart_home(request):
@@ -88,3 +90,29 @@ class CartItemUpdateView(UpdateView):
     model = CartItem
     template_name = 'carts/cart_item_update_form.html'
     success_url = reverse_lazy('cart:home')
+
+
+def checkout_home(request):
+    cart_obj, cart_created = Cart.objects.new_or_get(request)
+    cart_items = CartItem.objects.all().filter(cart=cart_obj)
+
+    if cart_created or cart_items.count() == 0:
+        return redirect('cart:home')
+
+    order_obj, order_obj_created = Order.objects.new_or_get(cart_obj)
+
+    if request.method == 'POST':
+        order_obj.mark_paid()
+        request.session['cart_items'] = 0
+        del request.session['cart_id']
+        return redirect('cart:success')
+
+    context = {
+        'object': order_obj,
+    }
+
+    return render(request, 'carts/checkout.html', context)
+
+
+def checkout_done_view(request):
+    return render(request, 'carts/checkout-done.html', {})
