@@ -77,7 +77,8 @@ def cart_item_detail_api_view(request):
                    "cart": x.cart,
                    "product": x.product,
                    "quantity": x.quantity,
-                   "price": x.price} for x in cart_item_obj]
+                   "price": x.price,
+                   "profitability": x.profitability} for x in cart_item_obj]
     cart_data = {'cart_items': cart_items}
     return JsonResponse(cart_data)
 

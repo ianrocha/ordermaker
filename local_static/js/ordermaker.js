@@ -92,7 +92,7 @@ $(document).ready(function(){
         var defaultQuantity = $('#id_default_quantity').val()
         var updateItem = $('#update_item')
         if ((thisItemQuantity % defaultQuantity != 0) || (thisItemQuantity == 0)) {
-            alert("This item can't be sold in that quantity!")
+            alert("This item can only be sold in multiples of " + defaultQuantity)
             updateItem.attr('disabled', true)
         } else {
             updateItem.attr('disabled', false)
@@ -113,13 +113,10 @@ $(document).ready(function(){
 
     function refreshProfitability(){
     //  Check the value for profitability
-
         var thisItemProfitability = CartItemProfitability
         var thisItemPrice = CartItemPrice.val()
         var defaultPrice = $('#id_default_price').val()
-
         var minGoodProfit = defaultPrice - (defaultPrice * 0.10)
-
         var updateItem = $('#update_item')
 
         if (thisItemPrice > defaultPrice){

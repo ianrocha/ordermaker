@@ -2,25 +2,23 @@
 
 {% block content %}
   <h1>Cart</h1>
+  <hr/>
   {% if cart.client %}
-  <table class="table cart-table">
-    <thead>
-      <tr>
-        <th scope="row">Client: {{ cart.client }}</th>
-      </tr>
+    <p class="h5">Client: {{ cart.client }}</p>
+
   {% else %}
+    <p class="h5">No Client Chosen! <a href="{% url 'clients:list' %}">Go to clients list</a>.</p>
+  {% endif %}
+  <hr/>
   <table class="table cart-table">
     <thead>
-      <tr>
-        <th scope="row">No Client Chosen! <a href="{% url 'clients:list' %}">Go to clients list</a>.</th>
-      </tr>
-  {% endif %}
-  {% if cart_items.exists %}
+    {% if cart_items.exists %}
       <tr>
         <th scope="col">#</th>
         <th scope="col">Product Name</th>
         <th scope="col">Quantity</th>
         <th scope="col">Product Unit Price</th>
+        <th scope="col">Profitability</th>
       </tr>
     </thead>
     <tbody class="cart-body">
@@ -30,17 +28,16 @@
         <td><a href="{% url 'cart:item-update' item.id %}">{{ item.product }}</a> {% include 'carts/snippets/remove-product.html' with product_id=item.product.id %} </td>
         <td>{{ item.quantity }}</td>
         <td>${{ item.price }}</td>
+        <td>{{ item.profitability }}</td>
       </tr>
       {% endfor %}
       <tr>
-          <td colspan="2"></td>
-          <td><a class="btn btn-block btn-success" href="#">Checkout</a></td>
+        <td colspan="4"></td>
+        <td><a class="btn btn-block btn-success" href="#">Checkout</a></td>
       </tr>
     </tbody>
   </table>
   {% else %}
-    </thead>
-  </table>
-  <p class="lead">Cart is empty! <a href="{% url 'products:list' %}">Go Shop</a>.</p>
+    <p class="h5">Cart is empty! <a href="{% url 'products:list' %}">Go Shop</a>.</p>
   {% endif %}
 {% endblock %}
