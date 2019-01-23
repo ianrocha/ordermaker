@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -102,10 +103,15 @@ def checkout_home(request):
     order_obj, order_obj_created = Order.objects.new_or_get(cart_obj)
 
     if request.method == 'POST':
-        order_obj.mark_paid()
-        request.session['cart_items'] = 0
-        del request.session['cart_id']
-        return redirect('cart:success')
+        client = order_obj.cart.client
+        if client is not None:
+            order_obj.mark_paid()
+            request.session['cart_items'] = 0
+            del request.session['cart_id']
+            return redirect('cart:success')
+        else:
+            messages.error(request, 'Cart has no client! Please choose one.')
+            return redirect('cart:home')
 
     context = {
         'object': order_obj,
