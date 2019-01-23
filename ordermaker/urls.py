@@ -24,10 +24,11 @@ from carts.views import cart_item_detail_api_view
 urlpatterns = [
     path('', HomePage.as_view(), name='home'),
     path('admin/', admin.site.urls),
-    path('clients/', include(('clients.urls', 'clients'), namespace='clients')),
-    path('products/', include(('products.urls', 'products'), namespace='products')),
+    path('api/cart/', cart_item_detail_api_view, name='api-cart'),
     path('cart/', include(('carts.urls', 'cart'), namespace='cart')),
-    path('api/cart/', cart_item_detail_api_view, name='api-cart')
+    path('clients/', include(('clients.urls', 'clients'), namespace='clients')),
+    path('orders/', include(('orders.urls', 'orders'), namespace='orders')),
+    path('products/', include(('products.urls', 'products'), namespace='products')),
 ]
 
 if settings.DEBUG:

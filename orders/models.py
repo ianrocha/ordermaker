@@ -3,6 +3,7 @@ import string
 
 from django.db import models
 from django.db.models.signals import pre_save
+from django.urls import reverse
 from django.utils.text import slugify
 
 from carts.models import Cart, CartItem
@@ -65,6 +66,9 @@ class Order(models.Model):
 
     def __str__(self):
         return self.order_id
+
+    def get_absolute_url(self):
+        return reverse('orders:detail', kwargs={'order_id': self.order_id})
 
     def mark_paid(self):
         if self.status != 'paid':
