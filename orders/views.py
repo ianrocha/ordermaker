@@ -1,6 +1,8 @@
 from django.http import Http404
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, DetailView, UpdateView
 
+from carts.forms import CartItemForm
 from .models import Order
 from carts.models import CartItem
 
@@ -27,3 +29,12 @@ class OrderDetailView(DetailView):
         if qs.count() == 1:
             return qs.first()
         raise Http404
+
+
+class OrderItemUpdateView(UpdateView):
+    form_class = CartItemForm
+    model = CartItem
+    template_name = 'orders/order-item-update.html'
+
+    def get_success_url(self):
+        return reverse('orders:detail', kwargs={'order_id': self.kwargs.get('order_id')})

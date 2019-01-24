@@ -25,7 +25,7 @@ from .views import (cart_home,
 urlpatterns = [
     path('', cart_home, name='home'),
     path('update/', cart_update, name='update'),
-    path('item/edit/<pk>', CartItemUpdateView.as_view(), name='item-update'),
+    path('item/edit/<pk>/', CartItemUpdateView.as_view(), name='item-update'),
     path('checkout/', checkout_home, name='checkout'),
     path('checkout/success/', checkout_done_view, name='success'),
 ]

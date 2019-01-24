@@ -11,7 +11,6 @@ from orders.models import Order
 from products.models import Product
 
 
-
 def cart_home(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
     cart_items_obj = CartItem.objects.all().filter(cart=cart_obj)
@@ -89,7 +88,7 @@ def cart_item_detail_api_view(request):
 class CartItemUpdateView(UpdateView):
     form_class = CartItemForm
     model = CartItem
-    template_name = 'carts/cart_item_update_form.html'
+    template_name = 'carts/cart-item-update-form.html'
     success_url = reverse_lazy('cart:home')
 
 

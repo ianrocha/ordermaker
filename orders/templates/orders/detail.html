@@ -25,7 +25,7 @@
         {% for item in cart_items.all %}
         <tr class="cart-product">
           <th scope="row">{{ forloop.counter }}</th>
-          <td><a href="{% url 'cart:item-update' item.id %}">{{ item.product }}</a></td>
+          <td><a href="{% url 'orders:order-item-update' order_id=object.order_id pk=item.id %}">{{ item.product }}</a></td>
           <td>{{ item.quantity }}</td>
           <td>${{ item.price }}</td>
           <td>{{ item.profitability }}</td>
