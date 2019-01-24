@@ -114,6 +114,7 @@ def checkout_home(request):
 
     context = {
         'object': order_obj,
+        'cart_items': cart_items,
     }
 
     return render(request, 'carts/checkout.html', context)

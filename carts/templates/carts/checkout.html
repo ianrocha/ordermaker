@@ -1,9 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {{ object.order_id }} -- {{ object.cart }}
+  <div class="row">
+    <div class="col-12 col-md-6 mx-auto">
+      <h1 align="center">Order {{ object.order_id }}</h1>
+    </div>
+  </div>
+  <hr/>
+  <table class="table cart-table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Product Unit Price</th>
+        <th scope="col">Profitability</th>
+      </tr>
+    </thead>
+    <tbody class="cart-body">
+      {% for item in cart_items.all %}
+      <tr class="cart-product">
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ item.product }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ item.price }}</td>
+        <td>{{ item.profitability }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   <form class="form" method="POST" action="">
     {% csrf_token %}
-    <button type="submit" class="btn btn-success">Checkout</button>
+    <button type="submit" class="btn btn-success">Confirm Checkout</button>
   </form>
 {% endblock %}
