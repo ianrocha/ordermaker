@@ -58,7 +58,6 @@ class OrderManager(models.Manager):
 class Order(models.Model):
     order_id = models.CharField(max_length=120, blank=True)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    total = models.DecimalField(default=0.0, max_digits=100, decimal_places=2)
     status = models.CharField(max_length=120, default='created', choices=ORDER_STATUS_CHOICES)
     active = models.BooleanField(default=True)
 

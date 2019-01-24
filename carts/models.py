@@ -24,7 +24,6 @@ class CartManager(models.Manager):
 
 class Cart(models.Model):
     client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.CASCADE)
-    total = models.DecimalField(default=0.0, max_digits=100, decimal_places=2)
 
     objects = CartManager()
 
