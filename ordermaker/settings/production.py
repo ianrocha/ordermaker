@@ -23,9 +23,9 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'b=q4w137$%t-5mkr1^3y9x#ohu((7$71&m+x^x=a-hflbnnir%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['order-maker.herokuapp.com/']
+ALLOWED_HOSTS = ['.herokuapp.com/']
 
 # Application definition
 
