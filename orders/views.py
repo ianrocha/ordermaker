@@ -1,10 +1,13 @@
+from django.contrib import messages
 from django.http import Http404
-from django.urls import reverse_lazy, reverse
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView
 
 from carts.forms import CartItemForm
 from .models import Order
 from carts.models import CartItem
+from ordermaker.utils import validate_quantity, validate_profitability
 
 
 class OrderListView(ListView):
@@ -38,3 +41,21 @@ class OrderItemUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('orders:detail', kwargs={'order_id': self.kwargs.get('order_id')})
+
+    def post(self, request, *args, **kwargs):
+        quantity = int(request.POST.get('quantity'))
+        default_quantity = int(request.POST.get('default_quantity'))
+        result_ok = validate_quantity(quantity=quantity, default_quantity=default_quantity)
+
+        if not result_ok:
+            messages.error(request, "This item can only be sold in multiples of {}".format(default_quantity))
+            return redirect('orders:order-item-update', order_id=self.kwargs.get('order_id'), pk=self.kwargs.get('pk'))
+
+        profitability = request.POST.get('profitability')
+        profitability_ok = validate_profitability(profitability)
+
+        if not profitability_ok:
+            messages.error(request, "Items can't have a bad profitability!")
+            return redirect('orders:order-item-update', order_id=self.kwargs.get('order_id'), pk=self.kwargs.get('pk'))
+
+        return super(OrderItemUpdateView, self).post(request, *args, **kwargs)

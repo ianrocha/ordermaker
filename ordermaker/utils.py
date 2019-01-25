@@ -16,3 +16,16 @@ def upload_image_path(filename, model):
         return 'clients/{}/{}'.format(new_filename, final_filename)
     else:
         return 'products/{}/{}'.format(new_filename, final_filename)
+
+
+def validate_quantity(quantity, default_quantity):
+    result = quantity % default_quantity
+    if result != 0:
+        return False
+    return True
+
+
+def validate_profitability(profitability):
+    if profitability == 'Bad':
+        return False
+    return True

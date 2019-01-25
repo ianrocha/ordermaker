@@ -9,6 +9,7 @@ from .models import Cart, CartItem
 from clients.models import Client
 from orders.models import Order
 from products.models import Product
+from ordermaker.utils import validate_quantity, validate_profitability
 
 
 def cart_home(request):
@@ -94,14 +95,17 @@ class CartItemUpdateView(UpdateView):
     def post(self, request, *args, **kwargs):
         quantity = int(request.POST.get('quantity'))
         default_quantity = int(request.POST.get('default_quantity'))
-        result = quantity % default_quantity
-        if result != 0:
+        result_ok = validate_quantity(quantity=quantity, default_quantity=default_quantity)
+
+        if not result_ok:
             messages.error(request, "This item can only be sold in multiples of {}".format(default_quantity))
             return redirect('cart:item-update', pk=self.kwargs.get('pk'))
 
         profitability = request.POST.get('profitability')
-        if profitability == 'Bad':
-            messages.error(request, "Items with bad profitability can't be added to cart!")
+        profitability_ok = validate_profitability(profitability)
+
+        if not profitability_ok:
+            messages.error(request, "Items can't have a bad profitability!")
             return redirect('cart:item-update', pk=self.kwargs.get('pk'))
 
         return super(CartItemUpdateView, self).post(request, *args, **kwargs)
