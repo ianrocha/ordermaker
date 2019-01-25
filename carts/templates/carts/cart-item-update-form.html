@@ -6,6 +6,7 @@
     {% csrf_token %}
     {{form.as_p}}
     <input class="btn btn-primary" type="submit" value="Update" id="update_item">
+    <a href="{% url 'cart:home' %}" class="btn btn-secondary">Back</a>
   </form>
 </div>
 {% endblock %}
