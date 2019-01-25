@@ -1,37 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div class="row">
-    <div class="col-12 col-md-6 mx-auto">
-      <h1 align="center">Order {{ object.order_id }}</h1>
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-12 col-md-6 mx-auto">
+        <h1 align="center">Order {{ object.order_id }}</h1>
+      </div>
     </div>
+    <hr/>
+
+    <p class="h5">Client: {{ object.cart.client }}</p>
+    <hr/>
+
+    {% if cart_items.exists %}
+      <table class="table cart-table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Product Unit Price</th>
+            <th scope="col">Profitability</th>
+          </tr>
+        </thead>
+        <tbody class="cart-body">
+          {% for item in cart_items.all %}
+          <tr class="cart-product">
+            <th scope="row">{{ forloop.counter }}</th>
+            <td><a href="{% url 'orders:order-item-update' order_id=object.order_id pk=item.id %}">{{ item.product }}</a></td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.price }}</td>
+            <td>{{ item.profitability }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+    <a href="{% url 'orders:list' %}" class="btn btn-secondary">Back</a>
   </div>
-  <hr/>
-
-  <p class="h5">Client: {{ object.cart.client }}</p>
-  <hr/>
-
-  {% if cart_items.exists %}
-    <table class="table cart-table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Product Name</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">Product Unit Price</th>
-          <th scope="col">Profitability</th>
-        </tr>
-      </thead>
-      <tbody class="cart-body">
-        {% for item in cart_items.all %}
-        <tr class="cart-product">
-          <th scope="row">{{ forloop.counter }}</th>
-          <td><a href="{% url 'orders:order-item-update' order_id=object.order_id pk=item.id %}">{{ item.product }}</a></td>
-          <td>{{ item.quantity }}</td>
-          <td>${{ item.price }}</td>
-          <td>{{ item.profitability }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% endif %}
 {% endblock %}
