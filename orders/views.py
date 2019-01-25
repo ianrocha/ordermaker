@@ -11,7 +11,7 @@ class OrderListView(ListView):
     template_name = 'orders/list.html'
 
     def get_queryset(self):
-        return Order.objects.all()
+        return Order.objects.get_paid_only()
 
 
 class OrderDetailView(DetailView):

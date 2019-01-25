@@ -54,6 +54,10 @@ class OrderManager(models.Manager):
             obj = self.model.objects.create(cart=cart_obj)
         return obj, created
 
+    def get_paid_only(self):
+        qs = self.get_queryset().filter(status__exact='paid')
+        return qs
+
 
 class Order(models.Model):
     order_id = models.CharField(max_length=120, blank=True)
