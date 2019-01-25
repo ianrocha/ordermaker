@@ -39,6 +39,11 @@ class OrderItemUpdateView(UpdateView):
     model = CartItem
     template_name = 'orders/order-item-update.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(OrderItemUpdateView, self).get_context_data()
+        context['order_id'] = self.kwargs.get('order_id')
+        return context
+
     def get_success_url(self):
         return reverse('orders:detail', kwargs={'order_id': self.kwargs.get('order_id')})
 
