@@ -20,7 +20,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'b=q4w137$%t-5mkr1^3y9x#ohu((7$71&m+x^x=a-hflbnnir%'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'products',
     'carts',
     'orders',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,8 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_dev', 'static_root
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_dev', 'media_root')
+
+from ordermaker.aws.conf import *
 
 CORS_REPLACE_HTTPS_REFERER = True
 HOST_SCHEME = "https://"

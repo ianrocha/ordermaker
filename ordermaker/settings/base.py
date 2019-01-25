@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'products',
     'carts',
     'orders',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,8 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_dev', 'static_root
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_dev', 'media_root')
+
+from ordermaker.aws.conf import *
 
 CORS_REPLACE_HTTPS_REFERER = False
 HOST_SCHEME = "http://"
