@@ -1,9 +1,9 @@
 import os
 import datetime
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'AKIAI2APPX2EOFLK5MYA')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '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')
-AWS_USERNAME = 'order-maker-user'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_USERNAME = 'ian-order-maker-user'
 AWS_GROUP_NAME = 'Order_Maker_Group'
 AWS_FILE_EXPIRE = 200
 AWS_PRELOAD_METADATA = True
