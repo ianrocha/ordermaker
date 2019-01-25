@@ -116,21 +116,6 @@ $(document).ready(function(){
         })
     })
 
-    var CartItemQuantity = $("#id_quantity");
-
-    CartItemQuantity.blur(function(){
-        // Check if the quantity input by user is multiple of the default quantity
-        var thisItemQuantity = $(this).val()
-        var defaultQuantity = $('#id_default_quantity').val()
-        var updateItem = $('#update_item')
-        if ((thisItemQuantity % defaultQuantity != 0) || (thisItemQuantity == 0)) {
-            alert("This item can only be sold in multiples of " + defaultQuantity)
-            updateItem.attr('disabled', true)
-        } else {
-            updateItem.attr('disabled', false)
-        }
-    })
-
     var CartItemPrice = $('#id_price')
 
     CartItemPrice.blur(function(){
@@ -149,23 +134,16 @@ $(document).ready(function(){
         var thisItemPrice = CartItemPrice.val()
         var defaultPrice = $('#id_default_price').val()
         var minGoodProfit = defaultPrice - (defaultPrice * 0.10)
-        var updateItem = $('#update_item')
 
         if (thisItemPrice > defaultPrice){
         //  set to optimum profitability -> price greater than default price
             thisItemProfitability.val('Optimum');
-            updateItem.attr('disabled', false);
         } else if ((thisItemPrice >= minGoodProfit)  && (thisItemPrice <= defaultPrice)) {
         //  set to good profitability -> price equal or less than default and greater or equal than default - 10%
             thisItemProfitability.val('Good');
-            updateItem.attr('disabled', false)
         } else {
-        //  set to bad profitability ->  price less than default - 10%;
-        //  disable update button and show alert
+        //  set to bad profitability ->  price less than default - 10%
             thisItemProfitability.val('Bad');
-            alert("Bad profitable items can't be added to cart!")
-            updateItem.attr('disabled', true);
-
         }
     }
 })

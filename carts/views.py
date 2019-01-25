@@ -91,6 +91,21 @@ class CartItemUpdateView(UpdateView):
     template_name = 'carts/cart-item-update-form.html'
     success_url = reverse_lazy('cart:home')
 
+    def post(self, request, *args, **kwargs):
+        quantity = int(request.POST.get('quantity'))
+        default_quantity = int(request.POST.get('default_quantity'))
+        result = quantity % default_quantity
+        if result != 0:
+            messages.error(request, "This item can only be sold in multiples of {}".format(default_quantity))
+            return redirect('cart:item-update', pk=self.kwargs.get('pk'))
+
+        profitability = request.POST.get('profitability')
+        if profitability == 'Bad':
+            messages.error(request, "Items with bad profitability can't be added to cart!")
+            return redirect('cart:item-update', pk=self.kwargs.get('pk'))
+
+        return super(CartItemUpdateView, self).post(request, *args, **kwargs)
+
 
 def checkout_home(request):
     cart_obj, cart_created = Cart.objects.new_or_get(request)
