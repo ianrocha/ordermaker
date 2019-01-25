@@ -12,6 +12,7 @@ from ordermaker.utils import validate_quantity, validate_profitability
 
 class OrderListView(ListView):
     template_name = 'orders/list.html'
+    paginate_by = 5
 
     def get_queryset(self):
         return Order.objects.get_paid_only()

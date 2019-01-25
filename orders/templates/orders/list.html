@@ -1,28 +1,46 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-  <div class="col-12">
-    <h1>Orders</h1>
+<div class="jumbotron bg-success">
+  <div class="row">
+    <div class="col-12 col-md-6 mx-auto">
+      <h1 class="display-3 text-white" align="center">Orders</h1>
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col">
-    <table class="table">
-      <thead>
-        <th>Order Id</th>
-        <th>Client</th>
-      </thead>
-      <tbody>
-        {% for object in object_list %}
-        <tr>
-          <td><a href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
-          <td>{{ object.cart.client }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="row">
+    <div class="col">
+      <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+          <th>Order Id</th>
+          <th>Client</th>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr class="table-info">
+            <td><a href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
+            <td class="text-dark">{{ object.cart.client }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% if is_paginated %}
+        <div class="pagination">
+          <span class="page-links"><p class="h6 text-dark">
+            {% if page_obj.has_previous %}
+              <a href="/orders?page={{ page_obj.previous_page_number }}" class="btn btn-primary">previous</a>
+            {% endif %}
+            <span class="page-current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            {% if page_obj.has_next %}
+              <a href="/orders?page={{ page_obj.next_page_number }}" class="btn btn-primary">next</a>
+            {% endif %}
+          </p>
+          </span>
+        </div>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endblock %}
