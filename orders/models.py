@@ -64,8 +64,12 @@ class Order(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     status = models.CharField(max_length=120, default='created', choices=ORDER_STATUS_CHOICES)
     active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = OrderManager()
+
+    class Meta:
+        ordering = ['-timestamp']
 
     def __str__(self):
         return self.order_id
