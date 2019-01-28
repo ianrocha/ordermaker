@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="jumbotron bg-success">
+<div class="jumbotron">
   <div class="row">
     <div class="col-12 col-md-6 mx-auto">
-      <h1 class="display-3 text-white" align="center">Orders</h1>
+      <h1 class="display-3" align="center">Orders</h1>
     </div>
   </div>
 
@@ -17,7 +17,7 @@
         </thead>
         <tbody>
           {% for object in object_list %}
-          <tr class="table-info">
+          <tr>
             <td><a href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
             <td class="text-dark">{{ object.cart.client }}</td>
           </tr>
