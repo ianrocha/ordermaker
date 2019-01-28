@@ -11,8 +11,8 @@
       <p class="h5">No Client Chosen! <a href="{% url 'clients:list' %}">Go to clients list</a>.</p>
     {% endif %}
     <hr/>
-    <table class="table cart-table">
-      <thead>
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
       {% if cart_items.exists %}
         <tr>
           <th scope="col">#</th>
@@ -32,12 +32,9 @@
           <td>{{ item.profitability }}</td>
         </tr>
         {% endfor %}
-        <tr>
-          <td colspan="4"></td>
-          <td><a class="btn btn-block btn-success" href="{% url 'cart:checkout' %}">Checkout</a></td>
-        </tr>
       </tbody>
     </table>
+    <a href="{% url 'cart:checkout' %}"><button type="button" class="btn btn-success">Checkout</button></a>
     {% else %}
       <p class="h5">Cart is empty! <a href="{% url 'products:list' %}">Go Shop</a>.</p>
     {% endif %}
