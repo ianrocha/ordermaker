@@ -4,6 +4,9 @@ from .models import CartItem
 
 
 class CartItemForm(forms.ModelForm):
+    """
+    Form based on Cart Item model to update a record
+    """
     class Meta:
         model = CartItem
         fields = ['product', 'quantity', 'price',
@@ -15,6 +18,10 @@ class CartItemForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the form with field 'product' disabled and not required,
+        and hide 'defaul_price' and 'default_quantity' fields
+        """
         super(CartItemForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         if instance and instance.id:

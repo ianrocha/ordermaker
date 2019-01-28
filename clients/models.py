@@ -4,6 +4,9 @@ from ordermaker.utils import upload_image_path
 
 
 def upload_to(instance, filename):
+    """
+    Obtain the local of file with the new file name
+    """
     return upload_image_path(filename, 'clients')
 
 

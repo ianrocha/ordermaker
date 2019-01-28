@@ -36,11 +36,17 @@ class OrderDetailView(DetailView):
 
 
 class OrderItemUpdateView(UpdateView):
+    """
+    Update View for an item of an order
+    """
     form_class = CartItemForm
     model = CartItem
     template_name = 'orders/order-item-update.html'
 
     def get_context_data(self, **kwargs):
+        """
+        :return: Context with the order_id of the item
+        """
         context = super(OrderItemUpdateView, self).get_context_data()
         context['order_id'] = self.kwargs.get('order_id')
         return context
@@ -51,6 +57,8 @@ class OrderItemUpdateView(UpdateView):
     def post(self, request, *args, **kwargs):
         quantity = int(request.POST.get('quantity'))
         default_quantity = int(request.POST.get('default_quantity'))
+
+        # Validate if the 'quantity' inputted by user is acceptable
         result_ok = validate_quantity(quantity=quantity, default_quantity=default_quantity)
 
         if not result_ok:
@@ -58,6 +66,7 @@ class OrderItemUpdateView(UpdateView):
             return redirect('orders:order-item-update', order_id=self.kwargs.get('order_id'), pk=self.kwargs.get('pk'))
 
         profitability = request.POST.get('profitability')
+        # Validate if the 'profitability' inputted by user is acceptable
         profitability_ok = validate_profitability(profitability)
 
         if not profitability_ok:

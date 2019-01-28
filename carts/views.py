@@ -13,6 +13,9 @@ from ordermaker.utils import validate_quantity, validate_profitability
 
 
 def cart_home(request):
+    """
+    List all products on cart, initialize checkout
+    """
     cart_obj, new_obj = Cart.objects.new_or_get(request)
     cart_items_obj = CartItem.objects.all().filter(cart=cart_obj)
     context = {'cart_items': cart_items_obj,
@@ -21,6 +24,9 @@ def cart_home(request):
 
 
 def cart_update(request):
+    """
+    Remove or add an item/client to a cart
+    """
     product_id = request.POST.get('product_id')
     client_id = request.POST.get('client_id')
     cart_obj, new_obj = Cart.objects.new_or_get(request)
@@ -45,10 +51,13 @@ def cart_update(request):
             return redirect("cart:home")
 
         cart_item_qs, item_created = CartItem.objects.get_or_create(cart=cart_obj, product=product_obj)
+        # Verifies if item is already on cart
         if not item_created:
+            # If it is then, remove item from cart
             cart_item_qs.delete()
             added = False
         else:
+            # If it is not, add item to cart
             cart_item_qs.cart = cart_obj
             cart_item_qs.product = product_obj
             cart_item_qs.quantity = product_obj.is_multiple
@@ -59,6 +68,7 @@ def cart_update(request):
             cart_item_qs.save()
             added = True
 
+        # Refresh number of items on cart
         cart_item_count = CartItem.objects.all().filter(cart=cart_obj)
         request.session['cart_items'] = cart_item_count.count()
 
@@ -74,6 +84,9 @@ def cart_update(request):
 
 
 def cart_item_detail_api_view(request):
+    """
+    Refresh cart items
+    """
     cart = request.GET.get('cart')
     cart_item_obj = CartItem.objects.all().filter(cart=cart)
     cart_items = [{"id": x.id,
@@ -87,6 +100,9 @@ def cart_item_detail_api_view(request):
 
 
 class CartItemUpdateView(UpdateView):
+    """
+    Update View for Cart Item records
+    """
     form_class = CartItemForm
     model = CartItem
     template_name = 'carts/cart-item-update-form.html'
@@ -95,6 +111,8 @@ class CartItemUpdateView(UpdateView):
     def post(self, request, *args, **kwargs):
         quantity = int(request.POST.get('quantity'))
         default_quantity = int(request.POST.get('default_quantity'))
+
+        # Validate if the 'quantity' inputted by user is acceptable
         result_ok = validate_quantity(quantity=quantity, default_quantity=default_quantity)
 
         if not result_ok:
@@ -102,6 +120,7 @@ class CartItemUpdateView(UpdateView):
             return redirect('cart:item-update', pk=self.kwargs.get('pk'))
 
         profitability = request.POST.get('profitability')
+        # Validate if the 'profitability' inputted by user is acceptable
         profitability_ok = validate_profitability(profitability)
 
         if not profitability_ok:
@@ -112,6 +131,9 @@ class CartItemUpdateView(UpdateView):
 
 
 def checkout_home(request):
+    """
+    Finalize checkout, closing cart and marking order has paid
+    """
     cart_obj, cart_created = Cart.objects.new_or_get(request)
     cart_items = CartItem.objects.all().filter(cart=cart_obj)
 
@@ -121,10 +143,15 @@ def checkout_home(request):
     order_obj, order_obj_created = Order.objects.new_or_get(cart_obj)
 
     if request.method == 'POST':
+        # Get the client
         client = order_obj.cart.client
         if client is not None:
+            # If cart has a client, do the checkout
+            # Change Order status to paid
             order_obj.mark_paid()
+            # set session cart items to 0
             request.session['cart_items'] = 0
+            # delete cart from session
             del request.session['cart_id']
             return redirect('cart:success')
         else:

@@ -4,7 +4,6 @@ import string
 from django.db import models
 from django.db.models.signals import pre_save
 from django.urls import reverse
-from django.utils.text import slugify
 
 from carts.models import Cart, CartItem
 
@@ -16,30 +15,17 @@ ORDER_STATUS_CHOICES = (
 
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
+    """
+    :return: A new random string
+    """
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def unique_slug_generator(instance, new_slug=None):
-    if new_slug is not None:
-        slug = new_slug
-    else:
-        slug = slugify(instance.title)
-
-    klass = instance.__class__
-    qs_exists = klass.objects.filter(slug=slug).exists()
-    if qs_exists:
-        new_slug = "{slug}-{randstr}".format(slug=slug, randstr=random_string_generator(size=4))
-        return unique_slug_generator(instance, new_slug=new_slug)
-    return slug
-
-
-def unique_order_id_generator(instance, new_slug=None):
+def unique_order_id_generator():
+    """
+    :return: A new random order id
+    """
     order_new_id = random_string_generator()
-
-    klass = instance.__class__
-    qs_exists = klass.objects.filter(order_id=order_new_id).exists()
-    if qs_exists:
-        return unique_slug_generator(instance)
     return order_new_id
 
 
@@ -55,6 +41,9 @@ class OrderManager(models.Manager):
         return obj, created
 
     def get_paid_only(self):
+        """
+        :return: A queryset filtered by orders with status 'paid' only
+        """
         qs = self.get_queryset().filter(status__exact='paid')
         return qs
 
@@ -78,6 +67,9 @@ class Order(models.Model):
         return reverse('orders:detail', kwargs={'order_id': self.order_id})
 
     def mark_paid(self):
+        """
+        Change order status to 'paid'
+        """
         if self.status != 'paid':
             self.status = 'paid'
             self.save()
@@ -85,8 +77,11 @@ class Order(models.Model):
 
 
 def pre_save_create_order_id(sender, instance, *args, **kwargs):
+    """
+    Obtain the order id before saving it
+    """
     if not instance.order_id:
-        instance.order_id = unique_order_id_generator(instance)
+        instance.order_id = unique_order_id_generator()
 
 
 pre_save.connect(pre_save_create_order_id, sender=Order)
