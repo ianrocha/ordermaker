@@ -4,7 +4,7 @@
   {% endif %}
   <div class="card-body">
     <h5 class="card-title">{{ instance.name }}</h5>
-    <p class="card-text">{{ instance.unit_price }}</p>
+    <p class="card-text">This product costs ${{ instance.unit_price }}</p>
     {% include 'products/snippets/update-cart.html' with product=instance cart=cart %}
   </div>
 </div>
