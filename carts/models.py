@@ -1,6 +1,7 @@
 from django.db import models
 
 from clients.models import Client
+from django.db.models.signals import pre_save
 from products.models import Product
 
 
@@ -67,3 +68,17 @@ class CartItem(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+def pre_save_create_cart_item(sender, instance, *args, **kwargs):
+    """
+    Obtain the order id before saving it
+    """
+    if instance:
+        instance.quantity = instance.product.is_multiple
+        instance.default_quantity = instance.product.is_multiple
+        instance.price = instance.product.unit_price
+        instance.default_price = instance.product.unit_price
+
+
+pre_save.connect(pre_save_create_cart_item, sender=CartItem)
