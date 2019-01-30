@@ -29,7 +29,18 @@ def unique_order_id_generator():
     return order_new_id
 
 
+class OrderQuerySet(models.query.QuerySet):
+    def by_order_id(self, order_id):
+        return self.filter(order_id__exact=order_id)
+
+
 class OrderManager(models.Manager):
+    def get_queryset(self):
+        return OrderQuerySet(self.model, using=self._db)
+
+    def by_order_id(self, order_id):
+        return self.get_queryset().by_order_id(order_id)
+    
     def new_or_get(self, cart_obj):
         created = False
         qs = self.get_queryset().filter(cart=cart_obj, active=True, status='created')

@@ -29,7 +29,8 @@ class OrderDetailView(DetailView):
         return context
 
     def get_object(self, queryset=None):
-        qs = Order.objects.all().filter(order_id=self.kwargs.get('order_id'))
+        order_id = self.kwargs.get('order_id')
+        qs = Order.objects.by_order_id(order_id=order_id)
         if qs.count() == 1:
             return qs.first()
         raise Http404
@@ -57,13 +58,15 @@ class OrderItemUpdateView(UpdateView):
     def post(self, request, *args, **kwargs):
         quantity = int(request.POST.get('quantity'))
         default_quantity = int(request.POST.get('default_quantity'))
+        order_id = self.kwargs.get('order_id')
+        pk = self.kwargs.get('pk')
 
         # Validate if the 'quantity' inputted by user is acceptable
         result_ok = validate_quantity(quantity=quantity, default_quantity=default_quantity)
 
         if not result_ok:
             messages.warning(request, "This item can only be sold in multiples of {}".format(default_quantity))
-            return redirect('orders:order-item-update', order_id=self.kwargs.get('order_id'), pk=self.kwargs.get('pk'))
+            return redirect('orders:order-item-update', order_id=order_id, pk=pk)
 
         profitability = request.POST.get('profitability')
         # Validate if the 'profitability' inputted by user is acceptable
@@ -71,6 +74,6 @@ class OrderItemUpdateView(UpdateView):
 
         if not profitability_ok:
             messages.warning(request, "Items can't have a bad profitability!")
-            return redirect('orders:order-item-update', order_id=self.kwargs.get('order_id'), pk=self.kwargs.get('pk'))
+            return redirect('orders:order-item-update', order_id=order_id, pk=pk)
 
         return super(OrderItemUpdateView, self).post(request, *args, **kwargs)
