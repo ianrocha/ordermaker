@@ -62,7 +62,7 @@ class OrderItemUpdateView(UpdateView):
         result_ok = validate_quantity(quantity=quantity, default_quantity=default_quantity)
 
         if not result_ok:
-            messages.error(request, "This item can only be sold in multiples of {}".format(default_quantity))
+            messages.warning(request, "This item can only be sold in multiples of {}".format(default_quantity))
             return redirect('orders:order-item-update', order_id=self.kwargs.get('order_id'), pk=self.kwargs.get('pk'))
 
         profitability = request.POST.get('profitability')
@@ -70,7 +70,7 @@ class OrderItemUpdateView(UpdateView):
         profitability_ok = validate_profitability(profitability)
 
         if not profitability_ok:
-            messages.error(request, "Items can't have a bad profitability!")
+            messages.warning(request, "Items can't have a bad profitability!")
             return redirect('orders:order-item-update', order_id=self.kwargs.get('order_id'), pk=self.kwargs.get('pk'))
 
         return super(OrderItemUpdateView, self).post(request, *args, **kwargs)
