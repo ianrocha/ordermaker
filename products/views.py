@@ -13,7 +13,7 @@ class ProductListView(ListView):
         """
         context = super(ProductListView, self).get_context_data()
         cart_obj, new_obj = Cart.objects.new_or_get(self.request)
-        cart_items = CartItem.objects.all().filter(cart__exact=cart_obj)
+        cart_items = CartItem.objects.by_cart(cart=cart_obj)
         cart_items_obj = [item.product for item in cart_items]
         context['cart'] = cart_obj
         context['cart_items'] = cart_items_obj

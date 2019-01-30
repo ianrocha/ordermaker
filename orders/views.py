@@ -24,7 +24,7 @@ class OrderDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(OrderDetailView, self).get_context_data()
         cart_obj = self.object.cart
-        cart_items_obj = CartItem.objects.all().filter(cart__exact=cart_obj)
+        cart_items_obj = CartItem.objects.by_cart(cart=cart_obj)
         context['cart_items'] = cart_items_obj
         return context
 

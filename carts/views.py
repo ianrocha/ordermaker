@@ -17,7 +17,7 @@ def cart_home(request):
     List all products on cart, initialize checkout
     """
     cart_obj, new_obj = Cart.objects.new_or_get(request)
-    cart_items_obj = CartItem.objects.all().filter(cart=cart_obj)
+    cart_items_obj = CartItem.objects.by_cart(cart=cart_obj)
     context = {'cart_items': cart_items_obj,
                'cart': cart_obj}
     return render(request, "carts/home.html", context)
@@ -69,7 +69,7 @@ def cart_update(request):
             added = True
 
         # Refresh number of items on cart
-        cart_item_count = CartItem.objects.all().filter(cart=cart_obj)
+        cart_item_count = CartItem.objects.by_cart(cart=cart_obj)
         request.session['cart_items'] = cart_item_count.count()
 
         if request.is_ajax():
@@ -88,7 +88,7 @@ def cart_item_detail_api_view(request):
     Refresh cart items
     """
     cart = request.GET.get('cart')
-    cart_item_obj = CartItem.objects.all().filter(cart=cart)
+    cart_item_obj = CartItem.objects.by_cart(cart=cart)
     cart_items = [{"id": x.id,
                    "cart": x.cart,
                    "product": x.product,
@@ -135,7 +135,7 @@ def checkout_home(request):
     Finalize checkout, closing cart and marking order has paid
     """
     cart_obj, cart_created = Cart.objects.new_or_get(request)
-    cart_items = CartItem.objects.all().filter(cart=cart_obj)
+    cart_items = CartItem.objects.by_cart(cart=cart_obj)
 
     if cart_created or cart_items.count() == 0:
         return redirect('cart:home')

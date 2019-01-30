@@ -31,6 +31,19 @@ class Cart(models.Model):
         return str(self.id)
 
 
+class CartItemQuerySet(models.query.QuerySet):
+    def by_cart(self, cart):
+        return self.filter(cart__exact=cart)
+
+
+class CartItemManager(models.Manager):
+    def get_queryset(self):
+        return CartItemQuerySet(self.model, using=self._db)
+
+    def by_cart(self, cart):
+        return self.get_queryset().by_cart(cart)
+
+
 class CartItem(models.Model):
     OPTIMUM = 'Optimum'
     GOOD = 'Good'
@@ -49,6 +62,8 @@ class CartItem(models.Model):
     default_quantity = models.PositiveIntegerField(default=1)
     default_price = models.DecimalField(default=0.01, max_digits=100, decimal_places=2)
     profitability = models.CharField(max_length=7, choices=PROFITABILITY_CHOICES, default=GOOD)
+
+    objects = CartItemManager()
 
     def __str__(self):
         return str(self.id)
